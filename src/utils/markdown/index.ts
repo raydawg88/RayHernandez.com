@@ -431,6 +431,9 @@ export const markdownToHtml = (markdown: string): string => {
   html = html.replace(/^## (.*$)(\n)?/gm, "<h2>$1</h2>");
   html = html.replace(/^# (.*$)(\n)?/gm, "<h1>$1</h1>");
 
+  // Convert images
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+
   // Convert bold and italic
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
