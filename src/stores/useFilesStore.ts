@@ -498,7 +498,7 @@ async function saveDefaultContents(
 // Function to generate an empty initial state (just for typing)
 const getEmptyFileSystemState = (): Record<string, FileSystemItem> => ({});
 
-const STORE_VERSION = 10; // Update Applets folder icon
+const STORE_VERSION = 11; // Add stoodio.com blog archive to Stories
 const STORE_NAME = "rayos:files";
 
 const initialFilesData: FilesStoreState = {
@@ -1324,11 +1324,41 @@ export const useFilesStore = create<FilesStoreState>()(
             // For existing users: sync root directories and ensure desktop shortcuts
             // This handles cases where new apps are added in updates
             // Also register default files for lazy loading (uses cached JSON)
+            // And sync any new default files (e.g., new Stories)
             Promise.all([
-              loadDefaultFiles().then((data) => {
+              loadDefaultFiles().then(async (data) => {
                 // Register default files for lazy loading so existing users
                 // can benefit from cached content loading
                 registerFilesForLazyLoad(data.files, state.items);
+
+                // Sync new default files that don't exist yet in the store
+                const currentItems = state.items;
+                const now = Date.now();
+                const newFiles: FileSystemItemData[] = [];
+                const newItems: Record<string, FileSystemItem> = {};
+
+                for (const file of data.files) {
+                  if (!currentItems[file.path]) {
+                    const uuid = uuidv4();
+                    newItems[file.path] = {
+                      ...file,
+                      status: "active",
+                      uuid,
+                      createdAt: now,
+                      modifiedAt: now,
+                    };
+                    newFiles.push(file);
+                  }
+                }
+
+                if (Object.keys(newItems).length > 0) {
+                  // Add new items to the store
+                  useFilesStore.setState((s: FilesStoreState) => ({
+                    items: { ...s.items, ...newItems },
+                  }));
+                  // Save content to IndexedDB
+                  await saveDefaultContents(newFiles, { ...currentItems, ...newItems });
+                }
               }),
               state.syncRootDirectoriesFromDefaults().then(() => {
                 // After syncing roots, ensure desktop shortcuts
