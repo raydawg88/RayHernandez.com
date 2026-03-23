@@ -4,6 +4,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import Image from "@tiptap/extension-image";
 import { SlashCommands } from "../extensions/SlashCommands";
 import { SpeechHighlight } from "../extensions/SpeechHighlight";
 import { EditorContext } from "./EditorContext";
@@ -23,6 +24,10 @@ export function EditorProvider({ children }: EditorProviderProps) {
       TaskList,
       TaskItem.configure({
         nested: true,
+      }),
+      Image.configure({
+        inline: true,
+        allowBase64: true,
       }),
       SlashCommands,
       SpeechHighlight,
