@@ -498,7 +498,7 @@ async function saveDefaultContents(
 // Function to generate an empty initial state (just for typing)
 const getEmptyFileSystemState = (): Record<string, FileSystemItem> => ({});
 
-const STORE_VERSION = 13; // Add TipTap Image support, restore images in Stories
+const STORE_VERSION = 14; // Fix images, add Story subfolders, clear stale story cache
 const STORE_NAME = "rayos:files";
 
 const initialFilesData: FilesStoreState = {
@@ -1301,6 +1301,27 @@ export const useFilesStore = create<FilesStoreState>()(
           // but we bump it to trigger the one-time sync in useFileSystem
           // which will calculate actual file sizes and set proper timestamps
           return persistedState;
+        }
+
+        if (version < 14) {
+          // Version 14: Stories moved to subfolders with fixed images.
+          // Remove all old story .md files so they get re-synced from filesystem.json
+          const oldState = persistedState as {
+            items: Record<string, FileSystemItem>;
+            libraryState?: LibraryState;
+          };
+          const cleanedItems: Record<string, FileSystemItem> = {};
+          for (const [path, item] of Object.entries(oldState.items)) {
+            // Remove old story .md files (they'll be re-added from new paths)
+            if (path.startsWith("/Documents/Stories/") && path.endsWith(".md")) {
+              continue;
+            }
+            cleanedItems[path] = item;
+          }
+          return {
+            ...oldState,
+            items: cleanedItems,
+          };
         }
 
         return persistedState;
