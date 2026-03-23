@@ -498,7 +498,7 @@ async function saveDefaultContents(
 // Function to generate an empty initial state (just for typing)
 const getEmptyFileSystemState = (): Record<string, FileSystemItem> => ({});
 
-const STORE_VERSION = 14; // Fix images, add Story subfolders, clear stale story cache
+const STORE_VERSION = 15; // Replace stoodio posts with Medium articles
 const STORE_NAME = "rayos:files";
 
 const initialFilesData: FilesStoreState = {
@@ -1303,8 +1303,8 @@ export const useFilesStore = create<FilesStoreState>()(
           return persistedState;
         }
 
-        if (version < 14) {
-          // Version 14: Stories moved to subfolders with fixed images.
+        if (version < 15) {
+          // Version 15: Replace stoodio posts with Medium articles.
           // Remove all old story .md files so they get re-synced from filesystem.json
           const oldState = persistedState as {
             items: Record<string, FileSystemItem>;
