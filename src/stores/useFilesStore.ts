@@ -498,7 +498,7 @@ async function saveDefaultContents(
 // Function to generate an empty initial state (just for typing)
 const getEmptyFileSystemState = (): Record<string, FileSystemItem> => ({});
 
-const STORE_VERSION = 11; // Add stoodio.com blog archive to Stories
+const STORE_VERSION = 12; // Strip dead image URLs from Stories
 const STORE_NAME = "rayos:files";
 
 const initialFilesData: FilesStoreState = {
