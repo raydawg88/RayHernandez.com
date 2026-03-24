@@ -498,7 +498,7 @@ async function saveDefaultContents(
 // Function to generate an empty initial state (just for typing)
 const getEmptyFileSystemState = (): Record<string, FileSystemItem> => ({});
 
-const STORE_VERSION = 17; // Add file sizes, sort order, wider TextEdit for stories
+const STORE_VERSION = 18; // Upgraded resume
 const STORE_NAME = "rayos:files";
 
 const initialFilesData: FilesStoreState = {
@@ -1141,7 +1141,7 @@ export const useFilesStore = create<FilesStoreState>()(
             { name: "AI Lab", aliasTarget: "/Documents/AI Lab", aliasType: "file", icon: "/icons/default/documents.png" },
             { name: "Stories", aliasTarget: "/Documents/Stories", aliasType: "file", icon: "/icons/default/documents.png" },
             // File shortcut (opens in TextEdit)
-            { name: "Resume", aliasTarget: "/Documents/Resume.txt", aliasType: "file", icon: "/icons/default/file-text.png" },
+            { name: "Resume", aliasTarget: "/Documents/Resume.md", aliasType: "file", icon: "/icons/default/file-text.png" },
             // App shortcuts
             { name: "Terminal", aliasTarget: "terminal", aliasType: "app", appId: "terminal", type: "application" },
             { name: "Settings", aliasTarget: "control-panels", aliasType: "app", appId: "control-panels", type: "application" },
@@ -1303,8 +1303,8 @@ export const useFilesStore = create<FilesStoreState>()(
           return persistedState;
         }
 
-        if (version < 17) {
-          // Version 17: File sizes, sort order, wider TextEdit for stories.
+        if (version < 18) {
+          // Version 18: Upgraded resume, clear stories for re-sync.
           // Remove all old story .md files so they get re-synced from filesystem.json
           const oldState = persistedState as {
             items: Record<string, FileSystemItem>;
@@ -1312,8 +1312,11 @@ export const useFilesStore = create<FilesStoreState>()(
           };
           const cleanedItems: Record<string, FileSystemItem> = {};
           for (const [path, item] of Object.entries(oldState.items)) {
-            // Remove old story .md files (they'll be re-added from new paths)
+            // Remove old story .md files and old Resume.txt (re-synced from filesystem.json)
             if (path.startsWith("/Documents/Stories/") && path.endsWith(".md")) {
+              continue;
+            }
+            if (path === "/Documents/Resume.txt") {
               continue;
             }
             cleanedItems[path] = item;
