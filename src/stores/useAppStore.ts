@@ -227,6 +227,15 @@ const createUseAppStore = () =>
             ? getMobileWindowSize(appId)
             : cfg.defaultSize;
 
+          // Allow initialData to override window size (e.g., for story files)
+          if (!isMobile && initialData && typeof initialData === 'object') {
+            const data = initialData as Record<string, unknown>;
+            const inner = (data.initialData ?? data) as Record<string, unknown>;
+            if (typeof inner.windowWidth === 'number' && typeof inner.windowHeight === 'number') {
+              size = { width: inner.windowWidth, height: inner.windowHeight };
+            }
+          }
+
           // Check if app is lazy (most are, except Finder which is critical)
           // We can assume non-Finder apps might need loading time
           const isLazy = appId !== "finder";

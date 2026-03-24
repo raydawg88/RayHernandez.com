@@ -870,15 +870,29 @@ export function useFileSystem(
                 `[useFileSystem] Stale TextEdit instance ${existingInstanceId} for ${file.path}, removing and opening new instance`
               );
               textEditStore.removeInstance(existingInstanceId);
+              const staleFileMeta = getFileItem(file.path);
               launchApp("textedit", {
-                initialData: { path: file.path, content: contentAsString ?? "" },
+                initialData: {
+                  path: file.path,
+                  content: contentAsString ?? "",
+                  ...(staleFileMeta?.windowWidth && staleFileMeta?.windowHeight
+                    ? { windowWidth: staleFileMeta.windowWidth, windowHeight: staleFileMeta.windowHeight }
+                    : {}),
+                },
                 launchOrigin,
               });
             }
           } else {
             // File not open - launch new TextEdit instance
+            const fileMeta = getFileItem(file.path);
             launchApp("textedit", {
-              initialData: { path: file.path, content: contentAsString ?? "" },
+              initialData: {
+                path: file.path,
+                content: contentAsString ?? "",
+                ...(fileMeta?.windowWidth && fileMeta?.windowHeight
+                  ? { windowWidth: fileMeta.windowWidth, windowHeight: fileMeta.windowHeight }
+                  : {}),
+              },
               launchOrigin,
             });
           }
