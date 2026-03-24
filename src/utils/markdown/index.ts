@@ -426,6 +426,14 @@ export const markdownToHtml = (markdown: string): string => {
   // Apply indented list processing
   html = processIndentedLists();
 
+  // Convert horizontal rules (must come before headings)
+  html = html.replace(/^---+\s*$/gm, "<hr />");
+
+  // Convert blockquotes
+  html = html.replace(/^>\s?(.*)$/gm, "<blockquote><p>$1</p></blockquote>");
+  // Merge consecutive blockquote tags
+  html = html.replace(/<\/blockquote>\s*<blockquote>/g, "");
+
   // Convert headings
   html = html.replace(/^### (.*$)(\n)?/gm, "<h3>$1</h3>");
   html = html.replace(/^## (.*$)(\n)?/gm, "<h2>$1</h2>");
