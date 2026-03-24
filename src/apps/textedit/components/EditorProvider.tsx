@@ -5,6 +5,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
 import { SlashCommands } from "../extensions/SlashCommands";
 import { SpeechHighlight } from "../extensions/SpeechHighlight";
 import { EditorContext } from "./EditorContext";
@@ -28,6 +29,14 @@ export function EditorProvider({ children }: EditorProviderProps) {
       Image.configure({
         inline: true,
         allowBase64: true,
+      }),
+      Link.configure({
+        openOnClick: true,
+        HTMLAttributes: {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          class: 'text-blue-600 underline cursor-pointer',
+        },
       }),
       SlashCommands,
       SpeechHighlight,
