@@ -1183,24 +1183,21 @@ ruby.lyrics-furigana rp {
 }
 
 /* ============================================================================
-   FONT SIZE DOUBLING — Override all Tailwind text utilities site-wide
+   FONT SIZE SCALING — Scale up all text ~1.33x site-wide
    except the top menu bar (File/Edit/View/Go/Help)
    ============================================================================ */
 
-/* Keep top menu bar at original font size */
-[data-menubar="top"] {
-  font-size: 12px !important;
-}
-[data-menubar="top"] * {
-  font-size: inherit !important;
-}
-
 /* Scale up Tailwind text size utilities (~1.33x) */
-.text-xs { font-size: 16px !important; line-height: 22px !important; }
-.text-sm { font-size: 19px !important; line-height: 26px !important; }
-.text-base { font-size: 21px !important; line-height: 28px !important; }
-.text-lg { font-size: 24px !important; line-height: 32px !important; }
-.text-xl { font-size: 27px !important; line-height: 34px !important; }
+:root :not([data-menubar="top"]) .text-xs,
+.text-xs:not([data-menubar="top"] *) { font-size: 16px !important; line-height: 22px !important; }
+:root :not([data-menubar="top"]) .text-sm,
+.text-sm:not([data-menubar="top"] *) { font-size: 19px !important; line-height: 26px !important; }
+:root :not([data-menubar="top"]) .text-base,
+.text-base:not([data-menubar="top"] *) { font-size: 21px !important; line-height: 28px !important; }
+:root :not([data-menubar="top"]) .text-lg,
+.text-lg:not([data-menubar="top"] *) { font-size: 24px !important; line-height: 32px !important; }
+:root :not([data-menubar="top"]) .text-xl,
+.text-xl:not([data-menubar="top"] *) { font-size: 27px !important; line-height: 34px !important; }
 
 /* Scale up arbitrary text sizes (~1.33x) */
 .text-\[10px\] { font-size: 13px !important; }
@@ -1210,11 +1207,16 @@ ruby.lyrics-furigana rp {
 .text-\[14px\] { font-size: 19px !important; }
 .text-\[16px\] { font-size: 21px !important; }
 
-/* Undo doubling inside the top menu bar */
-[data-menubar="top"] .text-xs { font-size: 12px !important; line-height: 16px !important; }
-[data-menubar="top"] .text-sm { font-size: 14px !important; line-height: 20px !important; }
-[data-menubar="top"] .text-base { font-size: 16px !important; line-height: 24px !important; }
-[data-menubar="top"] .text-\[10px\] { font-size: 10px !important; }
-[data-menubar="top"] .text-\[11px\] { font-size: 11px !important; }
-[data-menubar="top"] .text-\[12px\] { font-size: 12px !important; }
+/* Force menu bar back to original sizes (highest specificity, last in cascade) */
+[data-menubar="top"],
+[data-menubar="top"] *,
+[data-menubar="top"] .text-xs,
+[data-menubar="top"] .text-sm,
+[data-menubar="top"] .text-base,
+[data-menubar="top"] span,
+[data-menubar="top"] button,
+[data-menubar="top"] div {
+  font-size: 12px !important;
+  line-height: normal !important;
+}
 
