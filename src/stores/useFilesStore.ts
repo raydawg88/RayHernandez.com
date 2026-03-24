@@ -391,7 +391,7 @@ export async function ensureFileContentLoaded(
 async function saveDefaultContents(
   files: FileSystemItemData[],
   items: Record<string, FileSystemItem>,
-  options: { lazyLoadAssets?: boolean } = { lazyLoadAssets: true }
+  options: { lazyLoadAssets?: boolean; forceOverwrite?: boolean } = { lazyLoadAssets: true }
 ) {
   const textFiles: FileSystemItemData[] = [];
   const assetFiles: FileSystemItemData[] = [];
@@ -466,8 +466,10 @@ async function saveDefaultContents(
         if (storeFiles.length === 0) resolve();
       });
       
-      // Filter out existing files and batch write new ones
-      const newFiles = storeFiles.filter(({ uuid }) => !existingUUIDs.has(uuid));
+      // Filter out existing files unless forceOverwrite is set
+      const newFiles = options.forceOverwrite
+        ? storeFiles
+        : storeFiles.filter(({ uuid }) => !existingUUIDs.has(uuid));
       if (newFiles.length === 0) continue;
       
       // Batch write in a single transaction
@@ -1355,14 +1357,17 @@ export const useFilesStore = create<FilesStoreState>()(
                 // can benefit from cached content loading
                 registerFilesForLazyLoad(data.files, state.items);
 
-                // Sync new default files that don't exist yet in the store
+                // Sync default files: add missing ones AND update changed ones
                 const currentItems = state.items;
                 const now = Date.now();
                 const newFiles: FileSystemItemData[] = [];
+                const updatedFiles: FileSystemItemData[] = [];
                 const newItems: Record<string, FileSystemItem> = {};
+                const updatedItemPaths: string[] = [];
 
                 for (const file of data.files) {
                   if (!currentItems[file.path]) {
+                    // New file — add it
                     const uuid = uuidv4();
                     newItems[file.path] = {
                       ...file,
@@ -1372,16 +1377,47 @@ export const useFilesStore = create<FilesStoreState>()(
                       modifiedAt: now,
                     };
                     newFiles.push(file);
+                  } else if (file.content) {
+                    // Existing file — check if default content changed by comparing size
+                    const existingSize = currentItems[file.path].size || 0;
+                    const newSize = file.size || new Blob([file.content]).size;
+                    if (existingSize !== newSize) {
+                      // Content has changed — update it
+                      updatedFiles.push(file);
+                      updatedItemPaths.push(file.path);
+                    }
                   }
                 }
 
+                // Add new items to the store
                 if (Object.keys(newItems).length > 0) {
-                  // Add new items to the store
                   useFilesStore.setState((s: FilesStoreState) => ({
                     items: { ...s.items, ...newItems },
                   }));
-                  // Save content to IndexedDB
                   await saveDefaultContents(newFiles, { ...currentItems, ...newItems });
+                }
+
+                // Update changed items in the store and IndexedDB
+                if (updatedFiles.length > 0) {
+                  useFilesStore.setState((s: FilesStoreState) => {
+                    const items = { ...s.items };
+                    for (const file of updatedFiles) {
+                      if (items[file.path]) {
+                        items[file.path] = {
+                          ...items[file.path],
+                          ...file,
+                          uuid: items[file.path].uuid, // preserve UUID
+                          status: items[file.path].status, // preserve status
+                          modifiedAt: now,
+                          size: file.size || (file.content ? new Blob([file.content]).size : items[file.path].size),
+                        };
+                      }
+                    }
+                    return { items };
+                  });
+                  // Overwrite content in IndexedDB
+                  const mergedItems = { ...useFilesStore.getState().items };
+                  await saveDefaultContents(updatedFiles, mergedItems, { lazyLoadAssets: false, forceOverwrite: true });
                 }
               }),
               state.syncRootDirectoriesFromDefaults().then(() => {
