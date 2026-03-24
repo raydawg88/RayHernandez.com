@@ -680,7 +680,7 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
   font-family: Geneva-12, Geneva, Tahoma, Wtcsans-serif;
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
-  font-size: 12px;
+  font-size: 24px;
 }
 
 #dosbox > div > div.absolute.right-10.bottom-10 > div > svg {
@@ -988,12 +988,12 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
 /* Smaller body text for System 7 toasts */
 :root[data-os-theme="system7"] [data-sonner-toast] .text-sm,
 :root[data-os-theme="system7"] [data-sonner-toast] [data-content] {
-  font-size: 12px !important;
+  font-size: 24px !important;
 }
 
 /* Retro button style for System 7 toasts */
 :root[data-os-theme="system7"] [data-sonner-toast] button {
-  font-size: 12px !important;
+  font-size: 24px !important;
   border: 5px solid transparent !important;
   border-image: url('/assets/button.svg') 30 stretch !important;
   background: transparent !important;
@@ -1023,14 +1023,14 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
 :root[data-os-theme="xp"] [data-sonner-toast] [data-content] {
   color: #000 !important;
   font-family: "Pixelated MS Sans Serif", "ArkPixel", Tahoma, sans-serif !important;
-  font-size: 11px !important;
+  font-size: 22px !important;
   -webkit-font-smoothing: none !important;
   font-smooth: never !important;
 }
 
 :root[data-os-theme="xp"] [data-sonner-toast] button {
   font-family: "Pixelated MS Sans Serif", "ArkPixel", Tahoma, sans-serif !important;
-  font-size: 11px !important;
+  font-size: 22px !important;
   background: #ECE9D8 !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1059,14 +1059,14 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
 :root[data-os-theme="win98"] [data-sonner-toast] .text-sm,
 :root[data-os-theme="win98"] [data-sonner-toast] [data-content] {
   color: #000 !important;
-  font-size: 12px !important;
+  font-size: 24px !important;
   -webkit-font-smoothing: none !important;
   font-smooth: never !important;
 }
 
 :root[data-os-theme="win98"] [data-sonner-toast] button {
   font-family: "Pixelated MS Sans Serif", "ArkPixel", Tahoma, sans-serif !important;
-  font-size: 11px !important;
+  font-size: 22px !important;
   background: #C0C0C0 !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1180,5 +1180,13 @@ ruby.lyrics-furigana rp {
 /* Fullscreen: same as .lyrics-translation-fullscreen */
 .fullscreen-lyrics-text rt.lyrics-korean-rt {
   font-size: clamp(14px, min(5vw, 5vh), 60px) !important;
+}
+
+/* Keep top menu bar at original font size */
+.fixed.top-0.left-0.right-0.font-os-ui {
+  font-size: 12px !important;
+}
+.fixed.top-0.left-0.right-0.font-os-ui * {
+  font-size: inherit !important;
 }
 
