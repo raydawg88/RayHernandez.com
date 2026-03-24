@@ -1469,6 +1469,7 @@ export function MenuBar({ children, inWindowFrame = false }: MenuBarProps) {
   
   return (
     <div
+      data-menubar="top"
       className={`fixed top-0 left-0 right-0 flex border-b-[length:var(--os-metrics-border-width)] border-os-menubar items-center font-os-ui ${exposeMode ? "z-[9997]" : "z-[10002]"}`}
       style={{
         background:
