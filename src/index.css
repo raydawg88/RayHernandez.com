@@ -680,7 +680,7 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
   font-family: Geneva-12, Geneva, Tahoma, Wtcsans-serif;
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
-  font-size: 24px;
+  font-size: 16px;
 }
 
 #dosbox > div > div.absolute.right-10.bottom-10 > div > svg {
@@ -988,12 +988,12 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
 /* Smaller body text for System 7 toasts */
 :root[data-os-theme="system7"] [data-sonner-toast] .text-sm,
 :root[data-os-theme="system7"] [data-sonner-toast] [data-content] {
-  font-size: 24px !important;
+  font-size: 16px !important;
 }
 
 /* Retro button style for System 7 toasts */
 :root[data-os-theme="system7"] [data-sonner-toast] button {
-  font-size: 24px !important;
+  font-size: 16px !important;
   border: 5px solid transparent !important;
   border-image: url('/assets/button.svg') 30 stretch !important;
   background: transparent !important;
@@ -1023,14 +1023,14 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
 :root[data-os-theme="xp"] [data-sonner-toast] [data-content] {
   color: #000 !important;
   font-family: "Pixelated MS Sans Serif", "ArkPixel", Tahoma, sans-serif !important;
-  font-size: 22px !important;
+  font-size: 15px !important;
   -webkit-font-smoothing: none !important;
   font-smooth: never !important;
 }
 
 :root[data-os-theme="xp"] [data-sonner-toast] button {
   font-family: "Pixelated MS Sans Serif", "ArkPixel", Tahoma, sans-serif !important;
-  font-size: 22px !important;
+  font-size: 15px !important;
   background: #ECE9D8 !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1059,14 +1059,14 @@ button.piano-key.piano-key[class*="bg-[#ff33ff]"] {
 :root[data-os-theme="win98"] [data-sonner-toast] .text-sm,
 :root[data-os-theme="win98"] [data-sonner-toast] [data-content] {
   color: #000 !important;
-  font-size: 24px !important;
+  font-size: 16px !important;
   -webkit-font-smoothing: none !important;
   font-smooth: never !important;
 }
 
 :root[data-os-theme="win98"] [data-sonner-toast] button {
   font-family: "Pixelated MS Sans Serif", "ArkPixel", Tahoma, sans-serif !important;
-  font-size: 22px !important;
+  font-size: 15px !important;
   background: #C0C0C0 !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1195,20 +1195,20 @@ ruby.lyrics-furigana rp {
   font-size: inherit !important;
 }
 
-/* Double all Tailwind text size utilities */
-.text-xs { font-size: 24px !important; line-height: 32px !important; }
-.text-sm { font-size: 28px !important; line-height: 36px !important; }
-.text-base { font-size: 32px !important; line-height: 40px !important; }
-.text-lg { font-size: 36px !important; line-height: 44px !important; }
-.text-xl { font-size: 40px !important; line-height: 48px !important; }
+/* Scale up Tailwind text size utilities (~1.33x) */
+.text-xs { font-size: 16px !important; line-height: 22px !important; }
+.text-sm { font-size: 19px !important; line-height: 26px !important; }
+.text-base { font-size: 21px !important; line-height: 28px !important; }
+.text-lg { font-size: 24px !important; line-height: 32px !important; }
+.text-xl { font-size: 27px !important; line-height: 34px !important; }
 
-/* Double arbitrary text sizes */
-.text-\[10px\] { font-size: 20px !important; }
-.text-\[11px\] { font-size: 22px !important; }
-.text-\[12px\] { font-size: 24px !important; }
-.text-\[13px\] { font-size: 26px !important; }
-.text-\[14px\] { font-size: 28px !important; }
-.text-\[16px\] { font-size: 32px !important; }
+/* Scale up arbitrary text sizes (~1.33x) */
+.text-\[10px\] { font-size: 13px !important; }
+.text-\[11px\] { font-size: 15px !important; }
+.text-\[12px\] { font-size: 16px !important; }
+.text-\[13px\] { font-size: 17px !important; }
+.text-\[14px\] { font-size: 19px !important; }
+.text-\[16px\] { font-size: 21px !important; }
 
 /* Undo doubling inside the top menu bar */
 [data-menubar="top"] .text-xs { font-size: 12px !important; line-height: 16px !important; }
