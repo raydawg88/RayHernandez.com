@@ -318,7 +318,7 @@ export function FileList({
   onDropToCurrentDirectory,
   canDropFiles = false,
   currentPath = "/",
-  onRenameRequest,
+  onRenameRequest: _onRenameRequest,
   onItemContextMenu,
   sortType,
   onSortTypeChange,
@@ -359,30 +359,9 @@ export function FileList({
   const handleFileSelect = (file: FileItem) => {
     playClick();
 
-    // If user clicks on already selected file
+    // If user clicks on already selected file, just keep it selected
     if (selectedFile && selectedFile.path === file.path) {
-      // If rename is already pending, don't set another timeout
-      if (clickTimeoutRef.current) {
-        return;
-      }
-
-      // Start a timeout to trigger rename after a short delay (600ms)
-      lastClickedPathRef.current = file.path;
-      clickTimeoutRef.current = setTimeout(() => {
-        // Only trigger rename if this is still the selected file
-        if (onRenameRequest && lastClickedPathRef.current === file.path) {
-          onRenameRequest(file);
-        }
-        clickTimeoutRef.current = null;
-      }, 600);
-
       return;
-    }
-
-    // If clicking on a different file, cancel any pending rename and update selection
-    if (clickTimeoutRef.current) {
-      clearTimeout(clickTimeoutRef.current);
-      clickTimeoutRef.current = null;
     }
 
     lastClickedPathRef.current = file.path;
