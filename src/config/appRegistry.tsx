@@ -73,7 +73,7 @@ export const appRegistry = {
     helpItems: finderHelpItems,
     metadata: finderMetadata,
     windowConfig: {
-      defaultSize: { width: 400, height: 300 },
+      defaultSize: { width: 800, height: 600 },
       minSize: { width: 300, height: 200 },
     } as WindowConstraints,
   },
@@ -86,7 +86,7 @@ export const appRegistry = {
     helpItems: texteditHelpItems,
     metadata: texteditMetadata,
     windowConfig: {
-      defaultSize: { width: 430, height: 475 },
+      defaultSize: { width: 860, height: 700 },
       minSize: { width: 430, height: 200 },
     } as WindowConstraints,
   },
@@ -99,7 +99,7 @@ export const appRegistry = {
     helpItems: terminalHelpItems,
     metadata: terminalMetadata,
     windowConfig: {
-      defaultSize: { width: 600, height: 400 },
+      defaultSize: { width: 900, height: 600 },
       minSize: { width: 400, height: 300 },
     } as WindowConstraints,
   },
