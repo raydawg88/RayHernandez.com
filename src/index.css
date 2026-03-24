@@ -1207,7 +1207,7 @@ ruby.lyrics-furigana rp {
 .text-\[14px\] { font-size: 19px !important; }
 .text-\[16px\] { font-size: 21px !important; }
 
-/* Menu bar — slightly larger than original but not scaled up like content */
+/* Menu bar — double the original 12px */
 [data-menubar="top"],
 [data-menubar="top"] *,
 [data-menubar="top"] .text-xs,
@@ -1216,7 +1216,7 @@ ruby.lyrics-furigana rp {
 [data-menubar="top"] span,
 [data-menubar="top"] button,
 [data-menubar="top"] div {
-  font-size: 14px !important;
+  font-size: 24px !important;
   line-height: normal !important;
 }
 
